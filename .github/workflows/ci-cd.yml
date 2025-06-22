@@ -31,9 +31,6 @@ jobs:
           echo "$HOME/.railway/bin" >> $GITHUB_PATH
           export PATH="$HOME/.railway/bin:$PATH"
 
-      - name: Verificar se Railway CLI está instalado
-        run: $HOME/.railway/bin/railway --version
-
       - name: Autenticar e Deploy para Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
