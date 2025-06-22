@@ -10,25 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven
-        run: mvn clean package --batch-mode
+      - run: mvn clean package --batch-mode
 
-      - name: Run tests
-        run: mvn test
+      - run: mvn test
 
-      - name: Install Railway CLI and Deploy
+      - name: Install Railway CLI
+        run: |
+          curl -sSL https://railway.app/install.sh | sh
+          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+
+      - name: Debug Token
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: echo "Token length: ${#RAILWAY_TOKEN}"
+
+      - name: Deploy Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          curl -sSL https://railway.app/install.sh | sh
           export PATH="$HOME/.railway/bin:$PATH"
           railway up --detach
