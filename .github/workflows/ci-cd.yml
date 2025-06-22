@@ -29,13 +29,14 @@ jobs:
         run: |
           curl -sSL https://railway.app/install.sh | sh
           echo "$HOME/.railway/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.railway/bin:$PATH"
 
       - name: Verificar se Railway CLI está instalado
-        run: ~/.railway/bin/railway --version
+        run: $HOME/.railway/bin/railway --version
 
       - name: Autenticar e Deploy para Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          ~/.railway/bin/railway login --token $RAILWAY_TOKEN
-          ~/.railway/bin/railway up --detach
+          $HOME/.railway/bin/railway login --token $RAILWAY_TOKEN
+          $HOME/.railway/bin/railway up --detach
