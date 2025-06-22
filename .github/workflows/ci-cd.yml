@@ -32,3 +32,10 @@ jobs:
           curl -sSL https://railway.app/install.sh | sh
           export PATH="$HOME/.railway/bin:$PATH"
           railway up --detach
+
+      - name: List Railway Services
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          export PATH="$HOME/.railway/bin:$PATH"
+          railway services
